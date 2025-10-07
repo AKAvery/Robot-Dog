@@ -6,7 +6,9 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-
+@app.route('/functions')
+def functions():
+    return render_template('functions.html')
 
 if __name__ == '__main__':
     app.run(port = 4000, debug=True)

@@ -1,8 +1,9 @@
 body {
-    font-family: Georgia, serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    color: #333;
 }
 
 .nav-bar {
@@ -19,9 +20,10 @@ body {
 }
 
 .servo-control {
-    margin: 0.5rem 0;
+    margin: 0.75rem 0;
     padding: 0.5rem;
-    border: 1px solid #b47201ff;
+    border: 2px solid #b47201ff;
+    border-radius: 5px;
     align-items: center;
     display: flex;
 }
@@ -52,22 +54,25 @@ body {
 .servo-slider {
     width: 400px;
     height: 50px;
-
     align-self: center;
-    /* Remove these, as they don't affect the slider's appearance */
-    /* border: none; */
-    /* color: #b47201ff; */
     background-color: #f4f4f4;
+    outline: none;
+    border-radius: 3px;
+    /* Remove default appearance for all browsers */
+    -webkit-appearance: none;
+    appearance: none;
+    /* For Edge */
+    overflow: hidden;
 }
 
-/* Track */
+/* Track for Chrome, Safari, Edge */
 .servo-slider::-webkit-slider-runnable-track {
     height: 6px;
     background: #b47201ff;
     border-radius: 3px;
 }
 
-/* Thumb */
+/* Thumb for Chrome, Safari, Edge */
 .servo-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -78,6 +83,72 @@ body {
     border: 2px solid #f4f4f4;
     cursor: pointer;
     margin-top: -6px;
+    box-shadow: 0 0 2px #b47201ff;
+    transition: background 0.2s;
+}
+.servo-slider:focus::-webkit-slider-thumb {
+    background: #e5a100;
+    border-color: #b47201ff;
+}
+
+/* Track for Firefox */
+.servo-slider::-moz-range-track {
+    height: 6px;
+    background: #b47201ff;
+    border-radius: 3px;
+}
+/* Thumb for Firefox */
+.servo-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: #c47f00ff;
+    border-radius: 50%;
+    border: 2px solid #f4f4f4;
+    cursor: pointer;
+    box-shadow: 0 0 2px #b47201ff;
+    transition: background 0.2s;
+}
+.servo-slider:focus::-moz-range-thumb {
+    background: #e5a100;
+    border-color: #b47201ff;
+}
+
+/* Track for IE/Edge */
+.servo-slider::-ms-fill-lower,
+.servo-slider::-ms-fill-upper {
+    background: #b47201ff;
+}
+.servo-slider::-ms-thumb {
+    width: 18px;
+    height: 18px;
+    background: #c47f00ff;
+    border-radius: 50%;
+    border: 2px solid #f4f4f4;
+    cursor: pointer;
+    box-shadow: 0 0 2px #b47201ff;
+    transition: background 0.2s;
+}
+.servo-slider:focus::-ms-thumb {
+    background: #e5a100;
+    border-color: #b47201ff;
+}
+
+/* Remove outline on focus for all browsers */
+.servo-slider:focus {
+    outline: none;
+}
+
+/* Remove default styles for Firefox */
+.servo-slider::-moz-focus-outer {
+    border: 0;
+}
+
+/* Hide the outline for Edge/IE */
+.servo-slider:focus::-ms-fill-lower {
+    background: #b47201ff;
+}
+.servo-slider:focus::-ms-fill-upper {
+    background: #b47201ff;
 }
 
 /* For Firefox */

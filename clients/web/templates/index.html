@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/index.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <title>Felibe</title>
 </head>
 <body>
@@ -14,13 +15,13 @@
                 <a href="/">Felibe</a>
         </div>
             <div class="nav-right">
-                <a href="/debug">Debug</a>
+                <a href="/">Debug</a>
                 <a href="/functions">Functions</a>
             </div>
     </div>
     <main style="padding:1rem;max-width:900px;margin:0 auto;">
         <h1>Robot Dog Control</h1>
-        <label>ESP Host/IP: <input id="host" value="192.168.4.1" style="width:180px"></label>
+        <!-- <label>ESP Host/IP: <input id="host" value="192.168.4.1" style="width:180px"></label> -->
         <div id="controls"></div>
     </main>
 
@@ -71,7 +72,7 @@
                 // Wire events
                 slider.addEventListener('input', ()=> value.textContent = slider.value + "°");
                 btn.addEventListener('click', ()=>{
-                    const host = hostInput.value;
+                    const host = "192.168.4.1"; // VALUE OF IP THINGY THATS COMMENTED OUT
                     const pin = pins[i];
                     const angle = slider.value;
                     fetch(`http://${host}/moveServo?pin=${pin}&angle=${angle}`, {method:'POST'})
