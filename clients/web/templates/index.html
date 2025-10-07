@@ -1,0 +1,90 @@
+<!--192.168.4.1 is our server ip address-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Felibe</title>
+</head>
+<body>
+    <div>
+        <div class="nav-bar">
+            <div class="nav-left">
+                <a href="/">Felibe</a>
+        </div>
+            <div class="nav-right">
+                <a href="/debug">Debug</a>
+                <a href="/functions">Functions</a>
+            </div>
+    </div>
+    <main style="padding:1rem;max-width:900px;margin:0 auto;">
+        <h1>Robot Dog Control</h1>
+        <label>ESP Host/IP: <input id="host" value="192.168.4.1" style="width:180px"></label>
+        <div id="controls"></div>
+    </main>
+
+            
+</body>
+</html>
+<script>
+    const pins = [0,1,2,3,4,5,6,7];
+    const names = ['FLhip','FLknee','FRhip','FRknee','BLhip','BLknee','BRHip','BRKnee'];
+    const controls = document.getElementById('controls');
+    const hostInput = document.getElementById('host');
+
+    function buildControl(i){
+        const div = document.createElement('div');
+        div.className = 'servo-control';
+                const row = document.createElement('div');
+                row.className = 'servo-control';
+
+                // Left: label
+                const label = document.createElement('div');
+                label.className = 'servo-label';
+                label.textContent = `${names[i]} (${pins[i]})`;
+
+                // Middle: slider + value
+                const mid = document.createElement('div');
+                mid.className = 'servo-mid';
+                const slider = document.createElement('input');
+                slider.type = 'range';
+                slider.min = 0; slider.max = 180; slider.value = 90;
+                slider.id = `s_${i}`;
+                slider.className = 'servo-slider';
+                const value = document.createElement('span');
+                value.id = `v_${i}`;
+                value.textContent = '90°';
+                value.style.marginLeft = '8px';
+                mid.appendChild(slider);
+                mid.appendChild(value);
+
+                // Right: button
+                const right = document.createElement('div');
+                right.className = 'servo-action';
+                const btn = document.createElement('button');
+                btn.id = `b_${i}`;
+                btn.className = 'servo-btn';
+                btn.textContent = 'Send';
+                right.appendChild(btn);
+
+                // Wire events
+                slider.addEventListener('input', ()=> value.textContent = slider.value + "°");
+                btn.addEventListener('click', ()=>{
+                    const host = hostInput.value;
+                    const pin = pins[i];
+                    const angle = slider.value;
+                    fetch(`http://${host}/moveServo?pin=${pin}&angle=${angle}`, {method:'POST'})
+                        .then(r=>r.text())
+                        .then(t=>alert(t))
+                        .catch(e=>alert('Error: '+e));
+                });
+
+                row.appendChild(label);
+                row.appendChild(mid);
+                row.appendChild(right);
+                return row;
+    }
+
+    for(let i=0;i<pins.length;i++) controls.appendChild(buildControl(i));
+    </script>

@@ -1,0 +1,132 @@
+body {
+    font-family: Georgia, serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    padding: 10px;
+}
+
+.nav-left a, .nav-right a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.servo-control {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border: 1px solid #b47201ff;
+    align-items: center;
+    display: flex;
+}
+
+/* Layout: three columns (label | slider | button) */
+.servo-control {
+    justify-content: space-between;
+}
+.servo-label {
+    flex: 0 0 140px; /* fixed width for labels */
+    color: #222;
+    font-weight: 600;
+}
+.servo-mid {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* center slider horizontally */
+    gap: 12px;
+}
+.servo-action {
+    flex: 0 0 80px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ...existing code... */
+.servo-slider {
+    width: 400px;
+    height: 50px;
+
+    align-self: center;
+    /* Remove these, as they don't affect the slider's appearance */
+    /* border: none; */
+    /* color: #b47201ff; */
+    background-color: #f4f4f4;
+}
+
+/* Track */
+.servo-slider::-webkit-slider-runnable-track {
+    height: 6px;
+    background: #b47201ff;
+    border-radius: 3px;
+}
+
+/* Thumb */
+.servo-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #c47f00ff;
+    border-radius: 50%;
+    border: 2px solid #f4f4f4;
+    cursor: pointer;
+    margin-top: -6px;
+}
+
+/* For Firefox */
+.servo-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: #c47f00ff;
+    border-radius: 50%;
+    border: 2px solid #f4f4f4;
+    cursor: pointer;
+}
+.servo-slider::-moz-range-track {
+    height: 6px;
+    background: #b47201ff;
+    border-radius: 3px;
+}
+
+/* For IE */
+.servo-slider::-ms-fill-lower,
+.servo-slider::-ms-fill-upper {
+    background: #b47201ff;
+}
+.servo-slider::-ms-thumb {
+    width: 18px;
+    height: 18px;
+    background: #c47f00ff;
+    border-radius: 50%;
+    border: 2px solid #f4f4f4;
+    cursor: pointer;
+}
+
+/* Remove outline on focus */
+.servo-slider:focus {
+    outline: none;
+}
+
+.servo-btn {
+    margin-left: 75px;
+    margin-right: 25px;
+    padding: 4px 12px;
+    background: #b47201ff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    align-self: right;
+    transform: scale(1.2)
+}
+
+.servo-btn:hover {
+    background: #c47f00ff;
+}
