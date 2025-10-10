@@ -4,8 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/index.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <title>Felibe</title>
 </head>
 <body>
@@ -18,6 +16,7 @@
                 <a href="/">Debug</a>
                 <a href="/functions">Functions</a>
             </div>
+        </div>
     </div>
     <main style="padding:1rem;max-width:900px;margin:0 auto;">
         <h1>Robot Dog Control</h1>
@@ -25,67 +24,87 @@
         <div id="controls"></div>
     </main>
 
-            
-</body>
-</html>
-<script>
-    const pins = [0,1,2,3,4,5,6,7];
-    const names = ['FLhip','FLknee','FRhip','FRknee','BLhip','BLknee','BRHip','BRKnee'];
-    const controls = document.getElementById('controls');
-    const hostInput = document.getElementById('host');
+    <script>
+        const pins = [0,1,2,3,4,5,6,7];
+        const names = ['FLhip','FLknee','FRhip','FRknee','BLhip','BLknee','BRHip','BRKnee'];
+        const controls = document.getElementById('controls');
+        const hostInput = document.getElementById('host');
 
-    function buildControl(i){
-        const div = document.createElement('div');
-        div.className = 'servo-control';
-                const row = document.createElement('div');
-                row.className = 'servo-control';
+        function buildControl(i){
+            const div = document.createElement('div');
+            div.className = 'servo-control';
+                    const row = document.createElement('div');
+                    row.className = 'servo-control';
 
-                // Left: label
-                const label = document.createElement('div');
-                label.className = 'servo-label';
-                label.textContent = `${names[i]} (${pins[i]})`;
+                    // Left: label
+                    const label = document.createElement('div');
+                    label.className = 'servo-label';
+                    label.textContent = `${names[i]} (${pins[i]})`;
 
-                // Middle: slider + value
-                const mid = document.createElement('div');
-                mid.className = 'servo-mid';
-                const slider = document.createElement('input');
-                slider.type = 'range';
-                slider.min = 0; slider.max = 180; slider.value = 90;
-                slider.id = `s_${i}`;
-                slider.className = 'servo-slider';
-                const value = document.createElement('span');
-                value.id = `v_${i}`;
-                value.textContent = '90°';
-                value.style.marginLeft = '8px';
-                mid.appendChild(slider);
-                mid.appendChild(value);
+                    // Middle: slider + value
+                    const mid = document.createElement('div');
+                    mid.className = 'servo-mid';
+                    const slider = document.createElement('input');
+                    slider.type = 'range';
+                    slider.min = 0; slider.max = 180; slider.value = 90;
+                    slider.id = `s_${i}`;
+                    slider.className = 'servo-slider';
+                    const value = document.createElement('span');
+                    value.id = `v_${i}`;
+                    value.textContent = '90°';
+                    value.style.marginLeft = '8px';
+                    mid.appendChild(slider);
+                    mid.appendChild(value);
 
-                // Right: button
-                const right = document.createElement('div');
-                right.className = 'servo-action';
-                const btn = document.createElement('button');
-                btn.id = `b_${i}`;
-                btn.className = 'servo-btn';
-                btn.textContent = 'Send';
-                right.appendChild(btn);
+                    // Right: button
+                    const right = document.createElement('div');
+                    right.className = 'servo-action';
+                    const btn = document.createElement('button');
+                    btn.id = `b_${i}`;
+                    btn.className = 'servo-btn';
+                    btn.textContent = 'Send';
+                    right.appendChild(btn);
 
-                // Wire events
-                slider.addEventListener('input', ()=> value.textContent = slider.value + "°");
-                btn.addEventListener('click', ()=>{
-                    const host = "192.168.4.1"; // VALUE OF IP THINGY THATS COMMENTED OUT
-                    const pin = pins[i];
-                    const angle = slider.value;
-                    fetch(`http://${host}/moveServo?pin=${pin}&angle=${angle}`, {method:'POST'})
-                        .then(r=>r.text())
-                        .then(t=>alert(t))
-                        .catch(e=>alert('Error: '+e));
-                });
+                    // Wire events
+                    slider.addEventListener('input', ()=> value.textContent = slider.value + "°");
+                    btn.addEventListener('click', ()=>{
+                        const host = "192.168.4.1"; // VALUE OF IP THINGY THATS COMMENTED OUT
+                        const pin = pins[i];
+                        const angle = parseInt(slider.value);
+                        fetch(`http://${host}/moveServo?pin=${pin}&angle=${angle}`, {method:'GET'}) // WAS POST
+                            .then(r=>r.text())
+                            .then(t=>alert(t))
+                            .catch(e=>alert('Error: '+e));
+                    });
+                    row.appendChild(label);
+                    row.appendChild(mid);
+                    row.appendChild(right);
+                    return row;
+        }
 
-                row.appendChild(label);
-                row.appendChild(mid);
-                row.appendChild(right);
-                return row;
+        for(let i=0;i<pins.length;i++) controls.appendChild(buildControl(i));
+        </script>
+        <script>
+    (function(){
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+
+    // File or localhost dev
+    if (location.protocol === 'file:' || location.hostname === 'localhost') {
+        link.href = 'index.css';           // or '../static/index.css' if that's your layout
+    }
+    // ESP32 AP (adjust host if needed)
+    else if (location.hostname === '192.168.4.1') {
+        link.href = '/static/index.css';   // only if you serve it from the ESP32
+    }
+    // Flask (server-rendered)
+    else {
+        // If you are actually using Flask, render this tag in the template instead of JS
+        link.href = '/static/index.css';
     }
 
-    for(let i=0;i<pins.length;i++) controls.appendChild(buildControl(i));
+    document.head.appendChild(link);
+    })();
     </script>
+</body>
+</html>
