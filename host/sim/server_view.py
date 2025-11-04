@@ -11,12 +11,29 @@ ORDER = ["LF","RF","LR","RR"]
 ANCH = {"LF":(+90,+60), "RF":(+90,-60), "LR":(-90,+60), "RR":(-90,-60)}
 L_THIGH, L_FOOT = 84.0, 127.0
 
+import json, os
+def _load_cal():
+    try:
+        with open("host/config/calibration.json","r") as f: return json.load(f)
+    except Exception: return {"reverse":[False]*8, "offset_deg":[0]*8}
+
+CAL = _load_cal()
+
 def decode(packet):
     it = iter(packet); vals={}
+    idx = 0
     for leg in ORDER:
-        hip = next(it); knee = next(it)
-        vals[leg] = (math.radians(hip-90), math.radians(knee-90))
+        hip_b = next(it); knee_b = next(it)
+        hip  = hip_b  - 90
+        knee = knee_b - 90
+        # apply reverse and offsets to reconstruct logical angles
+        if CAL["reverse"][idx]:   hip  = -hip
+        hip  = hip  - CAL["offset_deg"][idx]; idx+=1
+        if CAL["reverse"][idx]:   knee = -knee
+        knee = knee - CAL["offset_deg"][idx]; idx+=1
+        vals[leg] = (math.radians(hip), math.radians(knee))
     return vals
+
 
 def fk(ax, ay, hip, knee):
     x1 = ax + L_THIGH*math.cos(hip); z1 = 0 - L_THIGH*math.sin(hip)

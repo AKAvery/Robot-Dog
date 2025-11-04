@@ -1,0 +1,7 @@
+{
+  "num_servos": 8,
+  "order_8": ["LF.hip", "LF.knee", "RF.hip", "RF.knee", "LR.hip", "LR.knee", "RR.hip", "RR.knee"],
+  "reverse":   [false, true,  true,  true,  false, true,  true,  true],
+  "offset_deg":[-85.0, -90.0, -85.0, -90.0, -85.0, -90.0, -85.0, -90.0],
+  "limits_deg": { "hip": { "min": -20, "max": 110 }, "knee": { "min": 10, "max": 170 } }
+}
