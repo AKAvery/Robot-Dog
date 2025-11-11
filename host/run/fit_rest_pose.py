@@ -16,8 +16,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--hip",  type=float, required=True, help="hip-pitch at rest (deg, 0=horiz, +down)")
     ap.add_argument("--knee", type=float, required=True, help="knee at rest (deg, 0=straight, +bent)")
-    ap.add_argument("--thigh", type=float, default=96.0)
-    ap.add_argument("--foot",  type=float, default=125.0)
+    ap.add_argument("--thigh", type=float, default=100.0)
+    ap.add_argument("--foot",  type=float, default=95.0)
     ap.add_argument("--write", action="store_true", help="write geometry.json & calibration.json")
     a = ap.parse_args()
 

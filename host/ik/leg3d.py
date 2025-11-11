@@ -1,6 +1,6 @@
 import math
 
-def ik3dof(foot_xyz, anchor_xy, anchor_heading_deg, L_hip2knee=28.0, L_thigh=84.0, L_foot=127.0):
+def ik3dof(foot_xyz, anchor_xy, anchor_heading_deg, L_hip2knee=28.8, L_thigh=100.0, L_foot=95.0):
     x = foot_xyz[0] - anchor_xy[0]
     y = foot_xyz[1] - anchor_xy[1]
     z = foot_xyz[2]
